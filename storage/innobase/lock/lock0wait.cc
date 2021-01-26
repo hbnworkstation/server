@@ -217,7 +217,7 @@ dberr_t lock_wait(que_thr_t *thr)
   if (trx->lock.wait_lock)
   {
     {
-      lock_sys.mutex_lock();
+      LockMutexGuard g;
       mysql_mutex_lock(&lock_sys.wait_mutex);
       if (lock_t *lock= trx->lock.wait_lock)
       {
@@ -225,9 +225,8 @@ dberr_t lock_wait(que_thr_t *thr)
         lock_cancel_waiting_and_release(lock);
         trx->mutex.wr_unlock();
       }
-      lock_sys.mutex_unlock();
-      mysql_mutex_unlock(&lock_sys.wait_mutex);
     }
+    mysql_mutex_unlock(&lock_sys.wait_mutex);
   }
 
   return trx->error_state;
