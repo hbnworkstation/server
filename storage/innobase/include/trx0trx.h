@@ -491,7 +491,7 @@ struct trx_lock_t {
 					mutex to prevent recursive deadlocks.
 					Protected by both lock_sys.latch
 					and the trx_t::mutex. */
-  /** number of record locks; writers use LockGuard or LockMutexGuard */
+  /** number of record locks; protected by lock_sys.assert_locked(page_id) */
   ulint n_rec_locks;
 };
 
